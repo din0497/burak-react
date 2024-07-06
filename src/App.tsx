@@ -1,10 +1,10 @@
 import React from "react";
 import "./css/app.css";
-import { Box, Button, Container, Stack, Typography } from "@mui/material";
-import { RippleBadge } from "./app/MaterialTheme/styled";
 import { Link, Route, Router, Switch } from "react-router-dom";
-import About from "./app/screens/About";
-import Users from "./app/screens/Users";
+import HomePage from "./app/screens/homePage";
+import { ProducsPage } from "./app/screens/productsPage";
+import { OrdersPage } from "./app/screens/ordersPage";
+import { UserPage } from "./app/screens/userPage";
 
 export function App() {
   return (
@@ -12,13 +12,16 @@ export function App() {
       <nav>
         <ul>
           <li>
-            <Link to="/">Home</Link>
+            <Link to="/">HomePage</Link>
           </li>
           <li>
-            <Link to="/about">About</Link>
+            <Link to="/products">ProductsPage</Link>
           </li>
           <li>
-            <Link to="/users">Users</Link>
+            <Link to="/orders">OrdersPage</Link>
+          </li>
+          <li>
+            <Link to="/member-page">UserPage</Link>
           </li>
         </ul>
       </nav>
@@ -26,22 +29,21 @@ export function App() {
       {/* A <Switch> looks through its children <Route>s and
                 renders the first one that matches the current URL. */}
       <Switch>
-        <Route path="/about">
-          <About />
+        <Route path="/products">
+          <ProducsPage />
         </Route>
-        <Route path="/users">
-          <Users />
+        <Route path="/orders">
+          <OrdersPage />
+        </Route>
+        <Route path="/member-page">
+          <UserPage />
         </Route>
         <Route path="/">
-          <Home />
+          <HomePage />
         </Route>
       </Switch>
     </div>
   );
-}
-
-function Home() {
-  return <Container>Home</Container>;
 }
 
 export default App;
