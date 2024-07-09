@@ -8,6 +8,7 @@ import { OtherNavbar } from "./components/headers/OtherNavbar";
 import { Footer } from "./components/footer";
 import "../css/app.css";
 import "../css/navbar.css";
+import"../css/other-navbar.css"
 import { HelpPage } from "./screens/helpPage";
 
 export function App() {
