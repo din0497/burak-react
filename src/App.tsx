@@ -1,6 +1,5 @@
-import React from "react";
 import "./css/app.css";
-import { Link, Route, Router, Switch, useLocation } from "react-router-dom";
+import { Route, Switch, useLocation } from "react-router-dom";
 import HomePage from "./app/screens/homePage";
 import { ProducsPage } from "./app/screens/productsPage";
 import { OrdersPage } from "./app/screens/ordersPage";
