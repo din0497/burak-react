@@ -47,7 +47,7 @@ export function HomeNavbar() {
 
             {!authMember ? (
               <Box>
-                <Button className="login-button" variant="contained">
+                <Button className="login" variant="contained">
                   Login
                 </Button>
               </Box>
