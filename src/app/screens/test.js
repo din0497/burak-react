@@ -20,7 +20,7 @@ class Test extends Component {
     });
   };
 
-  componentDidMount() {
+/*   componentDidMount() {
     console.log("componentDidMount");
     // runs after first render => RETRIEVE DATA FROM BACKEND SERVER
   }
@@ -30,7 +30,7 @@ class Test extends Component {
     // runs before component unmount
   }
 
-  componentDidUpdate() {}
+  componentDidUpdate() {} */
 
   render() {
     return (

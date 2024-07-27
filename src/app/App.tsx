@@ -11,7 +11,6 @@ import "../css/navbar.css";
 import "../css/other-navbar.css";
 import "../css/footer.css";
 import  HelpPage  from "./screens/helpPage";
-import Test from "./screens/test";
 
 export function App() {
   const location = useLocation();
@@ -34,7 +33,7 @@ export function App() {
           <HelpPage />
         </Route>
         <Route path="/">
-          <Test />
+          <HomePage />
         </Route>
       </Switch>
       <Footer />
