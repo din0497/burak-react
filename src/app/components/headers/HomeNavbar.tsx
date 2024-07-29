@@ -4,6 +4,8 @@ import Basket from "./Basket";
 import { useState, useEffect } from "react";
 
 export function HomeNavbar() {
+  console.log('Nav');
+  
   const authMember = null;
   const [count, setCount] = useState<number>(0);
   const [value, setValue] = useState<boolean>(true)

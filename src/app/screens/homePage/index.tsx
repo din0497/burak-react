@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ActiveUsers from "./ActiveUsers";
 import Advertisement from "./Advertisement";
 import Events from "./Events";
@@ -9,6 +9,14 @@ import "../../../css/home.css"
 
 
 export default function HomePage() {
+  // Selector: Store
+
+  useEffect(()=> {
+     // Backend => DATA
+
+     // Slice => Store
+  },[])
+
     return (<div className={"homepage"}>
       <Statistics />
       <PopularDishes />
