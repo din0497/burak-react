@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import { HomePageState } from "../../../libs/types/screen";
-import { act } from "react";
+
 
 const initialState: HomePageState = {
     popularDishes: [],
@@ -23,6 +23,8 @@ const homePageSlice = createSlice({
         }
     }
 })
+console.log(homePageSlice);
+
 
 export const { setPopularDishes, setNewDishes, setTopUsers } = homePageSlice.actions;
 

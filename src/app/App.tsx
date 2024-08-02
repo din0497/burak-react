@@ -13,7 +13,6 @@ import "../css/footer.css";
 import  HelpPage  from "./screens/helpPage";
 
 export function App() {
-  console.log('Appts');
   
   const location = useLocation();
 
