@@ -9,7 +9,7 @@ import "../../../css/home.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setPopularDishes } from "./slice";
+import { setNewDishes, setPopularDishes } from "./slice";
 import { Product } from "../../../libs/types/product";
 import ProductService from "../../services/ProductService";
 import { ProductCollection } from "../../../libs/enums/product.enum";
@@ -18,12 +18,15 @@ const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes(data: Product[]) {
     return dispatch(setPopularDishes(data));
   },
+  setNewDishes(data: Product[]){
+    return dispatch(setNewDishes(data))
+  }
 });
 
 
 
 export default function HomePage() {
-  const { setPopularDishes } = actionDispatch(useDispatch());
+  const { setPopularDishes, setNewDishes } = actionDispatch(useDispatch());
 
   useEffect(() => {
     const product = new ProductService();
@@ -39,6 +42,19 @@ export default function HomePage() {
         setPopularDishes(data);
       })
       .catch((err) => console.log(err));
+
+       product
+         .getProducts({
+           page: 1,
+           limit: 4,
+           order: "createdAt",
+           productCollection: ProductCollection.DISH,
+         })
+         .then((data) => {
+           console.log("data:", data);
+           setNewDishes(data);
+         })
+         .catch((err) => console.log(err));
   }, []);
 
  
