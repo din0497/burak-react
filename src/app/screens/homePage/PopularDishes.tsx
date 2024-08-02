@@ -30,7 +30,7 @@ export default function PopularDishes() {
           <Stack className="cards-frame">
             {list.length !== 0 ? (
               list.map((ele, index) => {
-                const imagePath = `${serverApi}/${ele.productImages}`
+                const imagePath = `${serverApi}/${ele.productImages[0]}`
                 return (
                   <CssVarsProvider key={ele._id}>
                     <Card className={"card"}>
