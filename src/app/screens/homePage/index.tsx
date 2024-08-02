@@ -9,24 +9,29 @@ import "../../../css/home.css";
 
 import { useDispatch, useSelector } from "react-redux";
 import { Dispatch } from "@reduxjs/toolkit";
-import { setNewDishes, setPopularDishes } from "./slice";
+import { setNewDishes, setPopularDishes, setTopUsers } from "./slice";
 import { Product } from "../../../libs/types/product";
 import ProductService from "../../services/ProductService";
 import { ProductCollection } from "../../../libs/enums/product.enum";
+import MemberService from "../../services/MemberService";
+import { Member } from "../../../libs/types/member";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setPopularDishes(data: Product[]) {
     return dispatch(setPopularDishes(data));
   },
-  setNewDishes(data: Product[]){
-    return dispatch(setNewDishes(data))
-  }
+  setNewDishes(data: Product[]) {
+    return dispatch(setNewDishes(data));
+  },
+  setTopUsers(data: Member[]) {
+    return dispatch(setTopUsers(data));
+  },
 });
 
-
-
 export default function HomePage() {
-  const { setPopularDishes, setNewDishes } = actionDispatch(useDispatch());
+  const { setPopularDishes, setNewDishes, setTopUsers } = actionDispatch(
+    useDispatch()
+  );
 
   useEffect(() => {
     const product = new ProductService();
@@ -43,22 +48,27 @@ export default function HomePage() {
       })
       .catch((err) => console.log(err));
 
-       product
-         .getProducts({
-           page: 1,
-           limit: 4,
-           order: "createdAt",
-           productCollection: ProductCollection.DISH,
-         })
-         .then((data) => {
-           console.log("data:", data);
-           setNewDishes(data);
-         })
-         .catch((err) => console.log(err));
-  }, []);
+    product
+      .getProducts({
+        page: 1,
+        limit: 4,
+        order: "createdAt",
+        productCollection: ProductCollection.DISH,
+      })
+      .then((data) => {
+        console.log("data:", data);
+        setNewDishes(data);
+      })
+      .catch((err) => console.log(err));
 
- 
-  
+    const member = new MemberService();
+    member
+      .getTopUsers()
+      .then((data) => {
+        setTopUsers(data);
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   return (
     <div className={"homepage"}>
