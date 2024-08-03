@@ -32,14 +32,16 @@ const productsRetriever = createSelector(retrieveProducts, (products) => ({
 export default function Products() {
   const { setProducts } = actionDispatch(useAppDispatch());
   const { products } = useSelector(productsRetriever);
-  const [searchText, setSearchText] = useState<string>("");
+
+  const [searchText, setSearchText] = useState<string>("");//l
+
   const history = useHistory()
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
     page: 1,
     limit: 8,
     order: "createdAt",
     productCollection: ProductCollection.DISH,
-    search: "",
+    search: "",//l
   });
 
   useEffect(() => {
@@ -77,8 +79,8 @@ export default function Products() {
   };
 
   const searchProductHandler = () => {
-    productSearch.search = searchText;
-    setProductSearch((prev) => ({ ...prev, productSearch }));
+    productSearch.search = searchText;//l
+    setProductSearch({...productSearch});
   };
 
   const handlePagination = (event: ChangeEvent<any>, value: number) => {
@@ -105,7 +107,7 @@ export default function Products() {
                   name={"singleResearch"}
                   placeholder={"Type here"}
                   onChange={(e) => {
-                    setSearchText(e.target.value);
+                    setSearchText(e.target.value);//l
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
