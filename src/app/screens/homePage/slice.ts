@@ -23,7 +23,7 @@ const homePageSlice = createSlice({
         }
     }
 })
-console.log(homePageSlice);
+
 
 
 export const { setPopularDishes, setNewDishes, setTopUsers } = homePageSlice.actions;

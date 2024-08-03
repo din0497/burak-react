@@ -43,7 +43,6 @@ export default function HomePage() {
         productCollection: ProductCollection.DISH,
       })
       .then((data) => {
-        console.log("data:", data);
         setPopularDishes(data);
       })
       .catch((err) => console.log(err));
@@ -56,7 +55,6 @@ export default function HomePage() {
         productCollection: ProductCollection.DISH,
       })
       .then((data) => {
-        console.log("data:", data);
         setNewDishes(data);
       })
       .catch((err) => console.log(err));
