@@ -39,6 +39,7 @@ const restaurantRetriever = createSelector(
 
 
 export default function ChosenProduct() {
+  
   return (
     <div className={"chosen-product"}>
       <Box className={"title"}>Product Detail</Box>
