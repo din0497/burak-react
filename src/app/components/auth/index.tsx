@@ -82,6 +82,8 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
 
       const member = new MemberService();
       const result = await member.login(loginInput);
+   
+      
 
      /*  setAuthMember(result); */
       handleLoginClose();
@@ -210,17 +212,21 @@ export default function AuthenticationModal(props: AuthenticationModalProps) {
                 label="username"
                 variant="outlined"
                 sx={{ my: "10px" }}
+                onChange={handleUsername}
               />
               <TextField
                 id={"outlined-basic"}
                 label={"password"}
                 variant={"outlined"}
                 type={"password"}
+                onChange={handlePassword}
+                onKeyDown={handlePasswordKeyDown}
               />
               <Fab
                 sx={{ marginTop: "27px", width: "120px" }}
                 variant={"extended"}
                 color={"primary"}
+                onClick={handleLoginRequest}
               >
                 <LoginIcon sx={{ mr: 1 }} />
                 Login
