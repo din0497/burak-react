@@ -3,11 +3,11 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../../libs/types/search";
-import { CartItemProp } from "../../../libs/types/props";
+import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
 /* import Basket from "./Basket"; */
 
-export const OtherNavbar = (props: CartItemProp) => {
-  const { cartItems } = props;
+export const OtherNavbar = (props: ProductsPageProps) => {
+  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
   const authMember = 0;
 
   return (
@@ -51,7 +51,13 @@ export const OtherNavbar = (props: CartItemProp) => {
                 Help
               </NavLink>
             </Box>
-            <Basket cartItems={cartItems} />
+            <Basket
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+            />
 
             {authMember ? (
               <img

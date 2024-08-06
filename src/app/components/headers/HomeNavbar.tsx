@@ -1,10 +1,16 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
-import { CartItemProp } from "../../../libs/types/props";
+import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
 
-export function HomeNavbar(props: CartItemProp) {
-  const { cartItems } = props;
+export function HomeNavbar(props: ProductsPageProps) {
+   const {
+     cartItems,
+     onAdd,
+     onRemove,
+     onDelete,
+     onDeleteAll,
+   } = props;
   const authMember = null;
 
   // Handlers
@@ -48,7 +54,13 @@ export function HomeNavbar(props: CartItemProp) {
                 Help
               </NavLink>
             </Box>
-            <Basket cartItems={cartItems} />
+            <Basket
+              cartItems={cartItems}
+              onAdd={onAdd}
+              onRemove={onRemove}
+              onDelete={onDelete}
+              onDeleteAll={onDeleteAll}
+            />
 
             {!authMember ? (
               <Box>

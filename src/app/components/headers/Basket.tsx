@@ -6,13 +6,23 @@ import Menu from "@mui/material/Menu";
 import CancelIcon from "@mui/icons-material/Cancel";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useHistory } from "react-router-dom";
-import { CartItemProp } from "../../../libs/types/props";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
 import { serverApi } from "../../../libs/config";
+import { CartItem } from "../../../libs/types/search";
 
-export default function Basket(props: CartItemProp) {
-  const { cartItems } = props;
+export default function Basket(props: ProductsPageProps) {
+  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
   const authMember = null;
   const history = useHistory();
+
+  const itemsPrice = cartItems.reduce(
+    (a: number, b: CartItem) => a + b.quantity * b.price,
+    0
+  );
+
+  const shippingCost: number = itemsPrice < 100 ? 5 : 0;
+  const totalPrice = (itemsPrice + shippingCost).toFixed(1);
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -79,28 +89,55 @@ export default function Basket(props: CartItemProp) {
             {cartItems.length === 0 ? (
               <div>Cart is empty!</div>
             ) : (
-              <div>Cart Products:</div>
+              <Stack
+                sx={{ margiLeft: "5px", cursor: "pointer" }}
+                flexDirection={"row"}
+              >
+                <div>Cart Products:</div>
+                <DeleteIcon
+                  onClick={() => {
+                    onDeleteAll();
+                  }}
+                />
+              </Stack>
             )}
           </Box>
 
           <Box className={"orders-main-wrapper"}>
             <Box className={"orders-wrapper"}>
               {cartItems.map((item) => {
-                const imagePath = `${serverApi}/${item.image}`
+                const imagePath = `${serverApi}/${item.image}`;
                 return (
                   <Box className={"basket-info-box"}>
                     <div className={"cancel-btn"}>
-                      <CancelIcon color={"primary"} />
+                      <CancelIcon
+                        color={"primary"}
+                        onClick={() => onDelete(item)}
+                      />
                     </div>
                     <img src={imagePath} className={"product-img"} />
                     <span className={"product-name"}>{item.name}</span>
                     <p
                       className={"product-price"}
-                    >{`${item.price} x ${item.quantity}`}</p>
+                    >{`$ ${item.price} x ${item.quantity}`}</p>
                     <Box sx={{ minWidth: 120 }}>
                       <div className="col-2">
-                        <button className="remove">-</button>{" "}
-                        <button className="add">+</button>
+                        <button
+                          className="remove"
+                          onClick={() => {
+                            onRemove(item);
+                          }}
+                        >
+                          -
+                        </button>{" "}
+                        <button
+                          className="add"
+                          onClick={() => {
+                            onAdd(item);
+                          }}
+                        >
+                          +
+                        </button>
                       </div>
                     </Box>
                   </Box>
@@ -108,12 +145,21 @@ export default function Basket(props: CartItemProp) {
               })}
             </Box>
           </Box>
-          <Box className={"basket-order"}>
-            <span className={"price"}>Total: $100 (98 +2)</span>
-            <Button startIcon={<ShoppingCartIcon />} variant={"contained"}>
-              Order
-            </Button>
-          </Box>
+          {cartItems.length !== 0 ? (
+            <Box className={"basket-order"}>
+              <span className={"price"}>
+                Total: ${totalPrice} ({itemsPrice} + {shippingCost})
+              </span>
+              <Button
+                startIcon={<ShoppingCartIcon />}
+                variant={"contained"}
+              >
+                Order
+              </Button>
+            </Box>
+          ) : (
+            ""
+          )}
         </Stack>
       </Menu>
     </Box>

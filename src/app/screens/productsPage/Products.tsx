@@ -20,6 +20,7 @@ import { useSelector } from "react-redux";
 import { serverApi } from "../../../libs/config";
 import { useHistory } from "react-router-dom";
 import { ProductsPageProps } from "../../../libs/types/props";
+import { CartItem } from "../../../libs/types/search";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setProducts: (data: Product[]) => dispatch(setProducts(data)),
@@ -29,7 +30,7 @@ const productsRetriever = createSelector(retrieveProducts, (products) => ({
   products,
 }));
 
-export default function Products(props: ProductsPageProps) {
+export default function Products(props: { onAdd: (item: CartItem) => void }) {
   const { onAdd } = props;
   const { setProducts } = actionDispatch(useAppDispatch());
   const { products } = useSelector(productsRetriever);
@@ -263,10 +264,10 @@ export default function Products(props: ProductsPageProps) {
                           onClick={(e) => {
                             onAdd({
                               _id: product._id,
-                              quantity:1,
+                              quantity: 1,
                               name: product.productName,
                               price: product.productPrice,
-                              image: product.productImages[0]
+                              image: product.productImages[0],
                             });
                             e.stopPropagation();
                           }}

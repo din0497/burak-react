@@ -22,6 +22,7 @@ import ProductService from "../../services/ProductService";
 import { serverApi } from "../../../libs/config";
 import MemberService from "../../services/MemberService";
 import { ProductsPageProps } from "../../../libs/types/props";
+import { CartItem } from "../../../libs/types/search";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -41,7 +42,8 @@ const restaurantRetriever = createSelector(
   })
 );
 
-export default function ChosenProduct(props: ProductsPageProps) {
+export default function ChosenProduct(props: { onAdd: (item: CartItem) => void }) {
+  const {onAdd} = props
   const { productId } = useParams<{ productId: string }>();
   const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);
@@ -113,6 +115,16 @@ export default function ChosenProduct(props: ProductsPageProps) {
             <div className={"button-box"}>
               <Button
                 variant="contained"
+                onClick={(e) => {
+                  onAdd({
+                    _id: chosenProduct._id,
+                    quantity: 1,
+                    name: chosenProduct.productName,
+                    price: chosenProduct.productPrice,
+                    image: chosenProduct.productImages[0],
+                  });
+                  e.stopPropagation();
+                }}
               >
                 Add To Basket
               </Button>

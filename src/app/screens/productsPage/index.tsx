@@ -6,7 +6,7 @@ import { CartItem } from "../../../libs/types/search";
 import { ProductsPageProps } from "../../../libs/types/props";
 
 
-export function ProducsPage(props: ProductsPageProps) {
+export function ProducsPage(props: { onAdd: (item: CartItem) => void }) {
   const { onAdd } = props;
   const products = useRouteMatch();
 
@@ -24,4 +24,4 @@ export function ProducsPage(props: ProductsPageProps) {
       </Switch>
     </div>
   );
-}
+}         
