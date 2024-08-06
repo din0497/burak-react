@@ -3,11 +3,27 @@ import React from "react";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
 import { CartItem } from "../../../libs/types/search";
-import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
-/* import Basket from "./Basket"; */
 
-export const OtherNavbar = (props: ProductsPageProps) => {
-  const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
+interface OtherNavbarProps {
+  cartItems: CartItem[];
+  onAdd: (item: CartItem) => void;
+  onRemove: (item: CartItem) => void;
+  onDelete: (item: CartItem) => void;
+  onDeleteAll: () => void;
+  setSignupOpen: (isOpen: boolean) => void;
+  setLoginOpen: (isOpen: boolean) => void;
+}
+
+export const OtherNavbar = (props: OtherNavbarProps) => {
+  const {
+    cartItems,
+    onAdd,
+    onRemove,
+    onDelete,
+    onDeleteAll,
+    setLoginOpen,
+    setSignupOpen,
+  } = props;
   const authMember = 0;
 
   return (
@@ -67,7 +83,7 @@ export const OtherNavbar = (props: ProductsPageProps) => {
               />
             ) : (
               <Box>
-                <Button variant="contained" className="login">
+                <Button variant="contained" className="login" onClick={()=>{setLoginOpen(true)}}>
                   Login
                 </Button>
               </Box>

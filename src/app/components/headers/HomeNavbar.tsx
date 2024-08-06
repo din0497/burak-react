@@ -1,15 +1,28 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
-import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
+import { CartItem } from "../../../libs/types/search";
 
-export function HomeNavbar(props: ProductsPageProps) {
+
+interface HomeNavbarProps {
+  cartItems: CartItem[];
+  onAdd: (item: CartItem) => void;
+  onRemove: (item: CartItem) => void;
+  onDelete: (item: CartItem) => void;
+  onDeleteAll: () => void;
+  setSignupOpen: (isOpen: boolean) => void;
+  setLoginOpen: (isOpen: boolean) => void;
+}
+
+export function HomeNavbar(props: HomeNavbarProps) {
    const {
      cartItems,
      onAdd,
      onRemove,
      onDelete,
      onDeleteAll,
+     setSignupOpen,
+     setLoginOpen,
    } = props;
   const authMember = null;
 
@@ -64,7 +77,7 @@ export function HomeNavbar(props: ProductsPageProps) {
 
             {!authMember ? (
               <Box>
-                <Button className="login" variant="contained">
+                <Button className="login" variant="contained" onClick={()=> setLoginOpen(true)}>
                   Login
                 </Button>
               </Box>
@@ -85,7 +98,7 @@ export function HomeNavbar(props: ProductsPageProps) {
             <Box className="service-txt">24 hours service</Box>
             <Box className="signup">
               {!authMember ? (
-                <Button variant={"contained"} className="signup-btn">
+                <Button variant={"contained"} className="signup-btn" onClick={()=> setSignupOpen(true)}>
                   Signup
                 </Button>
               ) : null}
