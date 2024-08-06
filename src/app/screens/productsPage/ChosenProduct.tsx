@@ -21,6 +21,7 @@ import { useDispatch, useSelector } from "react-redux";
 import ProductService from "../../services/ProductService";
 import { serverApi } from "../../../libs/config";
 import MemberService from "../../services/MemberService";
+import { ProductsPageProps } from "../../../libs/types/props";
 
 /** REDUX SLICE & SELECTOR */
 const actionDispatch = (dispatch: Dispatch) => ({
@@ -40,7 +41,7 @@ const restaurantRetriever = createSelector(
   })
 );
 
-export default function ChosenProduct() {
+export default function ChosenProduct(props: ProductsPageProps) {
   const { productId } = useParams<{ productId: string }>();
   const { setRestaurant, setChosenProduct } = actionDispatch(useDispatch());
   const { chosenProduct } = useSelector(chosenProductRetriever);

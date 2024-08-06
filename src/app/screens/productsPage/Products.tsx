@@ -19,7 +19,7 @@ import { useAppDispatch } from "../../hooks";
 import { useSelector } from "react-redux";
 import { serverApi } from "../../../libs/config";
 import { useHistory } from "react-router-dom";
-
+import { ProductsPageProps } from "../../../libs/types/props";
 
 const actionDispatch = (dispatch: Dispatch) => ({
   setProducts: (data: Product[]) => dispatch(setProducts(data)),
@@ -29,19 +29,20 @@ const productsRetriever = createSelector(retrieveProducts, (products) => ({
   products,
 }));
 
-export default function Products() {
+export default function Products(props: ProductsPageProps) {
+  const { onAdd } = props;
   const { setProducts } = actionDispatch(useAppDispatch());
   const { products } = useSelector(productsRetriever);
 
-  const [searchText, setSearchText] = useState<string>("");//l
+  const [searchText, setSearchText] = useState<string>(""); //l
 
-  const history = useHistory()
+  const history = useHistory();
   const [productSearch, setProductSearch] = useState<ProductInquiry>({
     page: 1,
     limit: 8,
     order: "createdAt",
     productCollection: ProductCollection.DISH,
-    search: "",//l
+    search: "", //l
   });
 
   useEffect(() => {
@@ -79,8 +80,8 @@ export default function Products() {
   };
 
   const searchProductHandler = () => {
-    productSearch.search = searchText;//l
-    setProductSearch({...productSearch});
+    productSearch.search = searchText; //l
+    setProductSearch({ ...productSearch });
   };
 
   const handlePagination = (event: ChangeEvent<any>, value: number) => {
@@ -89,9 +90,8 @@ export default function Products() {
   };
 
   const chosenDishesHandler = (id: string) => {
-     history.push(`/products/${id}`)
-
-  }
+    history.push(`/products/${id}`);
+  };
 
   return (
     <div className={"products"}>
@@ -107,7 +107,7 @@ export default function Products() {
                   name={"singleResearch"}
                   placeholder={"Type here"}
                   onChange={(e) => {
-                    setSearchText(e.target.value);//l
+                    setSearchText(e.target.value); //l
                   }}
                   onKeyDown={(e) => {
                     if (e.key === "Enter") {
@@ -248,14 +248,31 @@ export default function Products() {
                       ? product.productVolume + " litre"
                       : product.productSize + " size";
                   return (
-                    <Stack key={product._id} className={"product-card"} onClick={()=> chosenDishesHandler(product._id)}>
+                    <Stack
+                      key={product._id}
+                      className={"product-card"}
+                      onClick={() => chosenDishesHandler(product._id)}
+                    >
                       <Stack
                         className={"product-img"}
                         sx={{ backgroundImage: `url(${imagePath})` }}
                       >
                         <div className={"product-sale"}>{sizeVolume}</div>
-                        <Button className={"shop-btn"}>
+                        <Button
+                          className={"shop-btn"}
+                          onClick={(e) => {
+                            onAdd({
+                              _id: product._id,
+                              quantity:1,
+                              name: product.productName,
+                              price: product.productPrice,
+                              image: product.productImages[0]
+                            });
+                            e.stopPropagation();
+                          }}
+                        >
                           <img
+                            alt="icon"
                             src={"/icons/shopping-cart.svg"}
                             style={{ display: "flex" }}
                           />

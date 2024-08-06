@@ -1,9 +1,10 @@
 import { Box, Button, Container, Stack } from "@mui/material";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
+import { CartItemProp } from "../../../libs/types/props";
 
-export function HomeNavbar() {
-  
+export function HomeNavbar(props: CartItemProp) {
+  const { cartItems } = props;
   const authMember = null;
 
   // Handlers
@@ -47,7 +48,7 @@ export function HomeNavbar() {
                 Help
               </NavLink>
             </Box>
-            <Basket />
+            <Basket cartItems={cartItems} />
 
             {!authMember ? (
               <Box>
@@ -72,10 +73,7 @@ export function HomeNavbar() {
             <Box className="service-txt">24 hours service</Box>
             <Box className="signup">
               {!authMember ? (
-                <Button
-                  variant={"contained"}
-                  className="signup-btn"
-                >
+                <Button variant={"contained"} className="signup-btn">
                   Signup
                 </Button>
               ) : null}

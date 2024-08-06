@@ -2,9 +2,12 @@ import { Box, Button, Container, Stack } from "@mui/material";
 import React from "react";
 import { NavLink } from "react-router-dom";
 import Basket from "./Basket";
+import { CartItem } from "../../../libs/types/search";
+import { CartItemProp } from "../../../libs/types/props";
 /* import Basket from "./Basket"; */
 
-export const OtherNavbar = () => {
+export const OtherNavbar = (props: CartItemProp) => {
+  const { cartItems } = props;
   const authMember = 0;
 
   return (
@@ -48,7 +51,7 @@ export const OtherNavbar = () => {
                 Help
               </NavLink>
             </Box>
-            <Basket/>
+            <Basket cartItems={cartItems} />
 
             {authMember ? (
               <img
