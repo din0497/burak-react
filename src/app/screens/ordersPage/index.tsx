@@ -1,4 +1,3 @@
-
 import { useState, SyntheticEvent } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
@@ -8,10 +7,34 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import PausedOrders from "./PausedOrders";
 import ProcessOrders from "./ProcessOrders";
 import FinishedOrders from "./FinishedOrders";
+import { setFinishedOrders, setPausedOrders, setProcessOrders } from "./slice";
+import { Order, OrderInquiry } from "../../../libs/types/order";
+import { useDispatch } from "react-redux";
+import { useGlobals } from "../../hooks/useGlobals";
+import { useHistory } from "react-router-dom";
+import { OrderStatus } from "../../../libs/enums/order.enum";
+import { Dispatch } from "@reduxjs/toolkit";
 import "../../../css/order.css";
 
+/** REDUX SLICE & SELECTOR */
+
+const actionDispatch = (dispatch: Dispatch) => ({
+  setPausedOrders: (data: Order[]) => dispatch(setPausedOrders(data)),
+  setProcessOrders: (data: Order[]) => dispatch(setProcessOrders(data)),
+  setFinishedOrders: (data: Order[]) => dispatch(setFinishedOrders(data)),
+});
+
 export default function OrdersPage() {
+  const { setPausedOrders, setProcessOrders, setFinishedOrders } =
+    actionDispatch(useDispatch());
+  const { orderBuilder, authMember } = useGlobals();
+  const history = useHistory();
   const [value, setValue] = useState("1");
+  const [orderInquiry, setOrderInquiry] = useState<OrderInquiry>({
+    page: 1,
+    limit: 5,
+    orderStatus: OrderStatus.PAUSE,
+  });
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -113,4 +136,5 @@ export default function OrdersPage() {
         </Stack>
       </Container>
     </div>
-  )};
+  );
+}

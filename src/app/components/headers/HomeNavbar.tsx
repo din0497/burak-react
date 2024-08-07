@@ -26,7 +26,7 @@ interface HomeNavbarProps {
   handleLogoutClick: (e: T) => void;
   anchorEl: HTMLElement | null;
   handleCloseLogout: () => void;
-  handleLogoutRequest: () => void
+  handleLogoutRequest: () => void;
 }
 
 export function HomeNavbar(props: HomeNavbarProps) {
@@ -41,7 +41,7 @@ export function HomeNavbar(props: HomeNavbarProps) {
     handleLogoutClick,
     handleCloseLogout,
     anchorEl,
-    handleLogoutRequest
+    handleLogoutRequest,
   } = props;
   const { authMember } = useGlobals();
 
@@ -75,8 +75,8 @@ export function HomeNavbar(props: HomeNavbarProps) {
                   </NavLink>
                 </Box>
                 <Box className={"hover-line"}>
-                  <NavLink to="/orders" activeClassName="underline">
-                    Orders
+                  <NavLink activeClassName="underline" to={"/member-page"}>
+                    My Page
                   </NavLink>
                 </Box>
               </>
