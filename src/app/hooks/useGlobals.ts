@@ -17,7 +17,6 @@ export const useGlobals = () => {
     const context = useContext(GlobalContext);
     
     if (context === undefined) throw new Error("useGlobals within Provider");
-    console.log(context);
     
     return context;
 };

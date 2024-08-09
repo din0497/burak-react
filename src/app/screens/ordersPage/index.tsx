@@ -64,7 +64,7 @@ export default function OrdersPage() {
       .catch((err) => {
         console.log(err);
       });
-  }, [orderInquiry]);
+  }, [orderInquiry, orderBuilder]);
 
   //**  HANDLERS  **/
 
@@ -93,7 +93,7 @@ export default function OrdersPage() {
             </Box>
             <Stack className={"order-main-content"}>
               <PausedOrders setValue={setValue}/>
-              <PausedOrders setValue={setValue}/>
+              <ProcessOrders setValue={setValue}/>
            
               <FinishedOrders />
             </Stack>

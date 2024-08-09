@@ -2,14 +2,17 @@ import React from "react";
 import { Box, Stack } from "@mui/material";
 import Button from "@mui/material/Button";
 import TabPanel from "@mui/lab/TabPanel";
-import { useGlobals } from "../../hooks/useGlobals";
 import { useSelector } from "react-redux";
-import { createSelector } from "@reduxjs/toolkit";
+import { createSelector } from "reselect";
 import { retrievePausedOrders } from "./selector";
-import { Order } from "../../../libs/types/order";
+import { Messages, serverApi } from "../../../libs/config";
+import { Order, OrderItem, OrderUpdateInput } from "../../../libs/types/order";
 import { Product } from "../../../libs/types/product";
-import { serverApi } from "../../../libs/config";
-
+import { T } from "../../../libs/types/common";
+import { sweetErrorHandling } from "../../../libs/sweetAlert";
+import { OrderStatus } from "../../../libs/enums/order.enum";
+import { useGlobals } from "../../hooks/useGlobals";
+import OrderService from "../../services/OrderService";
 
 /** REDUX SLICE & SELECTOR */
 const pausedOrdersRetriever = createSelector(
@@ -25,7 +28,55 @@ export default function PausedOrders(props: PausedOrdersProps) {
   const { setValue } = props;
   const { authMember, setOrderBuilder } = useGlobals();
   const { pausedOrders } = useSelector(pausedOrdersRetriever);
-  console.log("tt", pausedOrders);
+
+  /** HANDLERS **/
+
+  const deleteOrderHandler = async (e: T) => {
+    try {
+      if (!authMember) throw new Error(Messages.error2);
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.DELETE,
+      };
+
+      const confirmation = window.confirm("Do you want to delete the order?");
+      if (confirmation) {
+        const order = new OrderService();
+        await order.updateOrder(input);
+        setOrderBuilder(new Date());
+      }
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
+  const processOrderHandler = async (e: T) => {
+    try {
+      if (!authMember) throw new Error(Messages.error2);
+      // PAYMENT PROCESS
+
+      const orderId = e.target.value;
+      const input: OrderUpdateInput = {
+        orderId: orderId,
+        orderStatus: OrderStatus.PROCESS,
+      };
+
+      const confirmation = window.confirm(
+        "Do you want to proceed with payment?"
+      );
+      if (confirmation) {
+        const order = new OrderService();
+        await order.updateOrder(input);
+        setValue("2");
+        setOrderBuilder(new Date());
+      }
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
 
   return (
     <TabPanel value={"1"}>
@@ -34,11 +85,10 @@ export default function PausedOrders(props: PausedOrdersProps) {
           return (
             <Box key={order._id} className={"order-main-box"}>
               <Box className={"order-box-scroll"}>
-                {order?.orderItems?.map((item) => {
+                {order?.orderItems?.map((item: OrderItem) => {
                   const product: Product = order.productData.filter(
                     (ele: Product) => item.productId === ele._id
                   )[0];
-
                   const imagePath = `${serverApi}/${product.productImages[0]}`;
                   return (
                     <Box key={item._id} className={"orders-name-price"}>
@@ -77,7 +127,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                   variant="contained"
                   color="secondary"
                   className={"cancel-button"}
-                  /* onClick={deleteOrderHandler} */
+                  onClick={deleteOrderHandler}
                 >
                   Cancel
                 </Button>
@@ -85,7 +135,7 @@ export default function PausedOrders(props: PausedOrdersProps) {
                   value={order._id}
                   variant="contained"
                   className={"pay-button"}
-                  /*    onClick={processOrderHandler} */
+                  onClick={processOrderHandler}
                 >
                   Payment
                 </Button>
