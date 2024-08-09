@@ -10,7 +10,7 @@ import { Order } from "../../../libs/types/order";
 import { Product } from "../../../libs/types/product";
 import { serverApi } from "../../../libs/config";
 
-/** REDUX SLICE & SELECTOR */
+
 /** REDUX SLICE & SELECTOR */
 const pausedOrdersRetriever = createSelector(
   retrievePausedOrders,
