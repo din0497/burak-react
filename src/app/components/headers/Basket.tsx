@@ -8,12 +8,15 @@ import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import { useHistory } from "react-router-dom";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { CartItemProp, ProductsPageProps } from "../../../libs/types/props";
-import { serverApi } from "../../../libs/config";
+import { Messages, serverApi } from "../../../libs/config";
 import { CartItem } from "../../../libs/types/search";
+import OrderService from "../../services/OrderService";
+import { sweetErrorHandling } from "../../../libs/sweetAlert";
+import { useGlobals } from "../../hooks/useGlobals";
 
 export default function Basket(props: ProductsPageProps) {
   const { cartItems, onAdd, onRemove, onDelete, onDeleteAll } = props;
-  const authMember = null;
+  const {authMember, setAuthMember, setOrderBuilder} = useGlobals()
   const history = useHistory();
 
   const itemsPrice = cartItems.reduce(
@@ -35,6 +38,24 @@ export default function Basket(props: ProductsPageProps) {
     setAnchorEl(null);
   };
 
+  const proceedOrderHandler = async () => {
+    try {
+      handleClose();
+      if (!authMember) throw new Error(Messages.error2);
+
+      const order = new OrderService();
+      await order.createOrder(cartItems);
+
+      onDeleteAll();
+
+      setOrderBuilder(new Date());
+      history.push("/orders");
+    } catch (err) {
+      console.log(err);
+      sweetErrorHandling(err).then();
+    }
+  };
+
   return (
     <Box className={"hover-line"}>
       <IconButton
@@ -45,7 +66,7 @@ export default function Basket(props: ProductsPageProps) {
         aria-expanded={open ? "true" : undefined}
         onClick={handleClick}
       >
-        <Badge badgeContent={3} color="secondary">
+        <Badge badgeContent={cartItems.length} color="secondary">
           <img src={"/icons/shopping-cart.svg"} />
         </Badge>
       </IconButton>
@@ -150,10 +171,7 @@ export default function Basket(props: ProductsPageProps) {
               <span className={"price"}>
                 Total: ${totalPrice} ({itemsPrice} + {shippingCost})
               </span>
-              <Button
-                startIcon={<ShoppingCartIcon />}
-                variant={"contained"}
-              >
+              <Button onClick={proceedOrderHandler} startIcon={<ShoppingCartIcon />} variant={"contained"}>
                 Order
               </Button>
             </Box>
@@ -165,3 +183,5 @@ export default function Basket(props: ProductsPageProps) {
     </Box>
   );
 }
+
+

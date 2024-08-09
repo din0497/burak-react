@@ -1,4 +1,4 @@
-import { useState, SyntheticEvent } from "react";
+import { useState, SyntheticEvent, useEffect } from "react";
 import { Container, Stack, Box } from "@mui/material";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
@@ -15,6 +15,7 @@ import { useHistory } from "react-router-dom";
 import { OrderStatus } from "../../../libs/enums/order.enum";
 import { Dispatch } from "@reduxjs/toolkit";
 import "../../../css/order.css";
+import OrderService from "../../services/OrderService";
 
 /** REDUX SLICE & SELECTOR */
 
@@ -35,6 +36,37 @@ export default function OrdersPage() {
     limit: 5,
     orderStatus: OrderStatus.PAUSE,
   });
+
+  useEffect(() => {
+    const order = new OrderService();
+
+    order
+      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PAUSE })
+      .then((data) => {
+        setPausedOrders(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    order
+      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.PROCESS })
+      .then((data) => {
+        setProcessOrders(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+    order
+      .getMyOrders({ ...orderInquiry, orderStatus: OrderStatus.FINISH })
+      .then((data) => {
+        setFinishedOrders(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [orderInquiry]);
+
+  //**  HANDLERS  **/
 
   const handleChange = (e: SyntheticEvent, newValue: string) => {
     setValue(newValue);
@@ -60,7 +92,7 @@ export default function OrdersPage() {
               </Box>
             </Box>
             <Stack className={"order-main-content"}>
-              <PausedOrders />
+              <PausedOrders setValue={setValue}/>
               <ProcessOrders />
               <FinishedOrders />
             </Stack>
